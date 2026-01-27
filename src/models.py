@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean, Float, ForeignKey
+from sqlalchemy import String, Boolean, Float, ForeignKey, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship 
 
 db = SQLAlchemy()
@@ -158,6 +158,7 @@ class  Comment_Instagram (db.Model):
 class  Media_Instagram (db.Model):
     __tablename__ = 'media_instagram'
     id: Mapped[int] = mapped_column(primary_key=True)
+    type_media = mapped_column(SQLEnum('IMG', 'VIDEO', name='type_media_enum'), nullable=False)
     url_media: Mapped[str] = mapped_column(String(300), nullable=False)
     #relation post_instagram
     post_id: Mapped[int] = mapped_column(ForeignKey('post_instagram.id'))
