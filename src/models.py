@@ -105,63 +105,63 @@ class User_Favorites_Starships(db.Model):
 
 
 
-#INSTAGRAM DB
+# #INSTAGRAM DB
 
-class Users_Instagram (db.Model):
-    __tablename__ = 'users_instagram'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(String(20), unique=True, nullable=False)
-    firstname: Mapped[str] = mapped_column(String(20), nullable=False)
-    lastname: Mapped[str] = mapped_column(String(20), nullable=False)
-    email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    #relations followes_instagram/user_from_id
-    user_like_follower: Mapped [list['Followers_Instagram']] = relationship(back_populates = 'user_follow')
-    #relations followes_instagram/user_to_id
-    user_following: Mapped [list['Followers_Instagram']] = relationship(back_populates = 'user_to_follow')
-    #relation comment_instagram
-    comment_user: Mapped [list['Comment_Instagram']] = relationship(back_populates = 'user_author_comment')
-    #relation post_instagram
-    post_user: Mapped [list['Post_Instagram']] = relationship(back_populates = 'user_id_post')
+# class Users_Instagram (db.Model):
+#     __tablename__ = 'users_instagram'
+#     id: Mapped[int] = mapped_column(primary_key=True)
+#     username: Mapped[str] = mapped_column(String(20), unique=True, nullable=False)
+#     firstname: Mapped[str] = mapped_column(String(20), nullable=False)
+#     lastname: Mapped[str] = mapped_column(String(20), nullable=False)
+#     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
+#     #relations followes_instagram/user_from_id
+#     user_like_follower: Mapped [list['Followers_Instagram']] = relationship(back_populates = 'user_follow')
+#     #relations followes_instagram/user_to_id
+#     user_following: Mapped [list['Followers_Instagram']] = relationship(back_populates = 'user_to_follow')
+#     #relation comment_instagram
+#     comment_user: Mapped [list['Comment_Instagram']] = relationship(back_populates = 'user_author_comment')
+#     #relation post_instagram
+#     post_user: Mapped [list['Post_Instagram']] = relationship(back_populates = 'user_id_post')
 
-class Followers_Instagram (db.Model):
-    __tablename__ = 'followers_instagram'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    #relations users_instagram
-    user_from_id: Mapped[int] = mapped_column(ForeignKey('users_instagram.id'))
-    user_follow: Mapped['Users_Instagram'] = relationship(back_populates = 'user_like_follower')
-     #relations users_instagram
-    user_to_id: Mapped[int] = mapped_column(ForeignKey('users_instagram.id'))
-    user_to_follow: Mapped['Users_Instagram'] = relationship(back_populates = 'user_following')
+# class Followers_Instagram (db.Model):
+#     __tablename__ = 'followers_instagram'
+#     id: Mapped[int] = mapped_column(primary_key=True)
+#     #relations users_instagram
+#     user_from_id: Mapped[int] = mapped_column(ForeignKey('users_instagram.id'))
+#     user_follow: Mapped['Users_Instagram'] = relationship(back_populates = 'user_like_follower')
+#      #relations users_instagram
+#     user_to_id: Mapped[int] = mapped_column(ForeignKey('users_instagram.id'))
+#     user_to_follow: Mapped['Users_Instagram'] = relationship(back_populates = 'user_following')
 
-class  Post_Instagram (db.Model):
-    __tablename__ = 'post_instagram'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    #relation user_instagram
-    user_id: Mapped[int] = mapped_column(ForeignKey('users_instagram.id'))
-    user_id_post: Mapped['Users_Instagram'] = relationship(back_populates = 'post_user')
-    #relation comment_instagram
-    post_to_comment: Mapped [list['Comment_Instagram']] = relationship(back_populates = 'post_id_select')
-    #relation media_instagram
-    post_to_media: Mapped [list['Media_Instagram']] = relationship(back_populates = 'post_id_media')
+# class  Post_Instagram (db.Model):
+#     __tablename__ = 'post_instagram'
+#     id: Mapped[int] = mapped_column(primary_key=True)
+#     #relation user_instagram
+#     user_id: Mapped[int] = mapped_column(ForeignKey('users_instagram.id'))
+#     user_id_post: Mapped['Users_Instagram'] = relationship(back_populates = 'post_user')
+#     #relation comment_instagram
+#     post_to_comment: Mapped [list['Comment_Instagram']] = relationship(back_populates = 'post_id_select')
+#     #relation media_instagram
+#     post_to_media: Mapped [list['Media_Instagram']] = relationship(back_populates = 'post_id_media')
 
-class  Comment_Instagram (db.Model):
-    __tablename__ = 'comment_instagram'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    comment_text: Mapped[str] = mapped_column(String(200), nullable=False)
-    #relation user_instagram
-    author_id: Mapped[int] = mapped_column(ForeignKey('users_instagram.id'))
-    user_author_comment: Mapped['Users_Instagram'] = relationship(back_populates = 'comment_user')
-    #relation post_instagram
-    post_id: Mapped[int] = mapped_column(ForeignKey('post_instagram.id'))
-    post_id_select: Mapped['Post_Instagram'] = relationship(back_populates = 'post_to_comment')
+# class  Comment_Instagram (db.Model):
+#     __tablename__ = 'comment_instagram'
+#     id: Mapped[int] = mapped_column(primary_key=True)
+#     comment_text: Mapped[str] = mapped_column(String(200), nullable=False)
+#     #relation user_instagram
+#     author_id: Mapped[int] = mapped_column(ForeignKey('users_instagram.id'))
+#     user_author_comment: Mapped['Users_Instagram'] = relationship(back_populates = 'comment_user')
+#     #relation post_instagram
+#     post_id: Mapped[int] = mapped_column(ForeignKey('post_instagram.id'))
+#     post_id_select: Mapped['Post_Instagram'] = relationship(back_populates = 'post_to_comment')
 
-class  Media_Instagram (db.Model):
-    __tablename__ = 'media_instagram'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    type_media = mapped_column(SQLEnum('IMG', 'VIDEO', name='type_media_enum'), nullable=False)
-    url_media: Mapped[str] = mapped_column(String(300), nullable=False)
-    #relation post_instagram
-    post_id: Mapped[int] = mapped_column(ForeignKey('post_instagram.id'))
-    post_id_media: Mapped['Post_Instagram'] = relationship(back_populates = 'post_to_media')
+# class  Media_Instagram (db.Model):
+#     __tablename__ = 'media_instagram'
+#     id: Mapped[int] = mapped_column(primary_key=True)
+#     type_media = mapped_column(SQLEnum('IMG', 'VIDEO', name='type_media_enum'), nullable=False)
+#     url_media: Mapped[str] = mapped_column(String(300), nullable=False)
+#     #relation post_instagram
+#     post_id: Mapped[int] = mapped_column(ForeignKey('post_instagram.id'))
+#     post_id_media: Mapped['Post_Instagram'] = relationship(back_populates = 'post_to_media')
 
 
